@@ -71,7 +71,7 @@ plt.imshow(edges, cmap='gray')
 plt.title("Canny Edge")
 plt.axis('off')
 
-# Dilated Edges
+# Dilated Edges basically expands the edges to make them more visible and connected, which can be useful for further processing or visualization.
 plt.subplot(2,3,5)
 plt.imshow(dilated_edges, cmap='gray')
 plt.title("Dilated Edges")
@@ -79,4 +79,37 @@ plt.axis('off')
 
 plt.tight_layout()
 plt.show()
-plt.savefig('screenshots/combined_pipeline.png')
+#plt.savefig('screenshots/combined_pipeline.png')
+
+'''contour algorithm used after dilation to find contours in the dilated image. As dilated image has continuous boundaries
+ than canny edge image,it helps to find contours more effectively.
+ Contour basically means the outer boundary of the object. It is used to find the shape of the object in the image.'''
+
+'''First parameter is the input image, second parameter is the contour retrieval mode, third parameter is the contour approximation method.
+   The contour retrieval mode specifies how the contours are retrieved from the image and gives importance
+   to outer boundaries only and ignores inside boundaries. The contour approximation method specifies
+   how the contours are approximated like basically storage optimization(stores essential points) 
+   and the [0] at the end is used to get the contours from the output of the function.'''
+
+contours=cv2.findContours(dilated_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+#Drawing contours on the original image
+contour_image=image_rgb.copy()
+''' here -1 means that we want to draw all the contours, (0,255,0) is the color of the contour in RGB format and 
+    2 is the thickness of the contour line.'''
+cv2.drawContours(contour_image, contours, -1, (0,255,0), 2)
+plt.imshow(contour_image)
+plt.title("Contours on Original Image")
+plt.axis('off')
+plt.show()
+for contour in contours:
+    area=cv2.contourArea(contour)
+    if area>100: # Filter out small contours based on area
+        x,y,w,h=cv2.boundingRect(contour)
+        '''Draw bounding box around the contour (x,y) is the top-left corner of the bounding box and 
+        (x+w,y+h) is the bottom-right corner of the bounding box. (255,0,0) is the color of the bounding box in RGB format and
+        2 is the thickness of the bounding box line.'''
+        cv2.rectangle(image_rgb,(x,y),(x+w,y+h),(255,0,0),2)
+plt.imshow(image_rgb)
+plt.title("Bounding Boxes on Original Image")
+plt.axis('off')
+plt.show()
