@@ -26,6 +26,6 @@ Satellite Image
 
 # Results
 
-<img width="640" height="480" alt="combined_pipeline" src="https://github.com/user-attachments/assets/b95339d1-886e-44e6-a8eb-29d5b3db86e8" />
+<img width="1492" height="896" alt="combined_pipeline" src="https://github.com/user-attachments/assets/ea84e2d9-4ca5-4ae8-8b41-65156f4f21f0" />
 <img width="640" height="480" alt="Object_Localization" src="https://github.com/user-attachments/assets/e5a49a68-0e94-445a-92ac-6dc69556ee6c" />
 
